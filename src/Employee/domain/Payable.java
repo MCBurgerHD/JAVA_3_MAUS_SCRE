@@ -1,0 +1,42 @@
+package Employee.domain;
+
+import java.text.NumberFormat;
+import java.util.List;
+
+public interface Payable {
+    int DEFAULT_WORK_HOURS_PER_DAY = 8;
+    int DEFAULT_WORK_DAYS_PER_YEAR = 250;
+
+    /**
+     * Formats an amount with the currency of the default Locale.
+     *
+     * @param payment the amount in need of a currency symbol
+     * @return the String with the currency symbol pre-/appended
+     */
+    static String getFormattedPayment(double payment) {
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        return nf.format(payment);
+    }
+
+    /**
+     * Computes the average hourly rate of given payables.
+     *
+     * @param payables the payables
+     * @return the average hourly rate of all given payables
+     */
+    static double calculateAverageHourlyRate(List<Payable> payables) {
+        if(payables.isEmpty()){
+            return 0;
+        }else{
+            double rate = 0;
+            for (Payable payable : payables) {
+                rate += payable.calculateHourlyRate();
+            }
+            return rate / payables.size();
+        }
+    }
+
+    double calculateHourlyRate();
+
+    //TODO: MAKE TO EURO METHOD
+}
